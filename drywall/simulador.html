@@ -1,0 +1,162 @@
+<!doctype html>
+<!--
+  DrywallPC - Simulador "Monte seu cômodo" (Expotech 2026, UniFECAF)
+
+  O visitante escolhe medidas e materiais, vê o cômodo desenhado em 3D
+  (perspectiva isométrica, em SVG), recebe a nota da "vistoria" e o
+  orçamento com os produtos da loja. Tudo em HTML + CSS + JavaScript:
+  - desenho, vistoria e orçamento:  js/simulador.js
+  - produtos e preços:              js/produtos.js (os mesmos da loja)
+  - visual:                         css/style.css + css/loja.css + css/simulador.css
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador DrywallPC</title>
+<meta name="description" content="Monte seu cômodo de drywall: escolha medidas, placa, cor, piso e forro, veja como fica e receba o orçamento. Projeto DrywallPC, Expotech 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/loja.css">
+<link rel="stylesheet" href="css/simulador.css">
+<script src="js/produtos.js" defer></script>
+<script src="js/simulador.js" defer></script>
+</head>
+<body>
+
+<div class="fita" aria-hidden="true"></div>
+<header class="topo">
+  <div class="topo-in">
+    <a class="marca" href="index.html">DrywallPC</a>
+    <nav aria-label="Seções">
+      <a href="index.html">Projeto</a>
+      <a href="loja.html">Loja</a>
+      <a href="simulador.html" class="ativo" aria-current="page">Simulador</a>
+    </nav>
+    <a class="botao-carrinho" href="loja.html#carrinho">Carrinho <span class="contador" id="contador">0</span></a>
+  </div>
+</header>
+
+<main id="inicio">
+
+  <div class="sim-hero">
+    <p class="selo">Simulador</p>
+    <h1>Monte seu cômodo</h1>
+    <p class="lead">Escolha as medidas e os materiais, veja como fica e passe pela vistoria. No final, o orçamento vai direto para o carrinho da loja.</p>
+  </div>
+
+  <div class="sim">
+    <!-- Controles -->
+    <form class="sim-painel" id="sim-form" novalidate>
+
+      <fieldset>
+        <legend>1. Que cômodo é?</legend>
+        <select id="comodo" aria-label="Tipo de cômodo">
+          <option value="quarto">Quarto</option>
+          <option value="banheiro">Banheiro</option>
+          <option value="cozinha">Cozinha</option>
+          <option value="home">Sala de cinema (home theater)</option>
+          <option value="escritorio">Escritório</option>
+          <option value="servidor">Sala de servidores (data center)</option>
+        </select>
+        <p class="dica" id="comodo-dica"></p>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Medidas</legend>
+        <label class="faixa"><span>Largura <output id="out-largura">3,0 m</output></span>
+          <input type="range" id="largura" min="1.5" max="8" step="0.1" value="3"></label>
+        <label class="faixa"><span>Profundidade <output id="out-profundidade">3,0 m</output></span>
+          <input type="range" id="profundidade" min="1.5" max="8" step="0.1" value="3"></label>
+        <label class="faixa"><span>Altura (pé-direito) <output id="out-altura">2,7 m</output></span>
+          <input type="range" id="altura" min="2.2" max="4" step="0.1" value="2.7"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Paredes de drywall</legend>
+        <label class="check"><input type="checkbox" id="parede-esq" checked><span>Parede da esquerda</span></label>
+        <label class="check"><input type="checkbox" id="parede-dir" checked><span>Parede da direita</span></label>
+        <div class="opcoes" role="radiogroup" aria-label="Tipo de placa">
+          <label class="opcao"><input type="radio" name="placa" value="placa-st" checked><span><i style="background:#F4F3EF"></i>Standard</span></label>
+          <label class="opcao"><input type="radio" name="placa" value="placa-ru"><span><i style="background:#7DB46C"></i>RU (umidade)</span></label>
+          <label class="opcao"><input type="radio" name="placa" value="placa-rf"><span><i style="background:#E9A3A8"></i>RF (fogo)</span></label>
+        </div>
+        <label class="check"><input type="checkbox" id="la"><span>Isolamento acústico (lã de vidro)</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>4. Acabamento</legend>
+        <p class="rotulo">Cor da tinta</p>
+        <div class="cores" id="cores" role="radiogroup" aria-label="Cor da tinta"></div>
+        <label><span class="rotulo">Piso</span>
+          <select id="piso">
+            <option value="porcelanato">Porcelanato claro</option>
+            <option value="madeira">Piso de madeira</option>
+            <option value="cimento">Cimento queimado</option>
+          </select></label>
+        <label><span class="rotulo">Forro</span>
+          <select id="forro">
+            <option value="nenhum">Sem forro novo</option>
+            <option value="drywall">Forro de drywall</option>
+            <option value="pvc">Forro de PVC</option>
+          </select></label>
+        <label class="check"><input type="checkbox" id="porta" checked><span>Porta (0,80 × 2,10 m)</span></label>
+        <label class="check"><input type="checkbox" id="janela" checked><span>Janela (1,20 × 1,00 m)</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>5. Desafio do orçamento</legend>
+        <label><span class="rotulo">Quanto você pode gastar? (opcional)</span>
+          <input type="number" id="orcamento" min="0" step="50" placeholder="Ex.: 3000" inputmode="numeric"></label>
+      </fieldset>
+    </form>
+
+    <!-- Desenho e resultado -->
+    <div class="sim-saida">
+      <div class="cena">
+        <div class="cena-barra">
+          <label class="check"><input type="checkbox" id="raiox"><span>Raio-x: ver a estrutura por dentro</span></label>
+        </div>
+        <svg id="cena" role="img" aria-labelledby="cena-desc" xmlns="http://www.w3.org/2000/svg"></svg>
+        <p class="cena-desc" id="cena-desc"></p>
+      </div>
+
+      <section class="vistoria" aria-labelledby="vistoria-titulo">
+        <div class="vistoria-topo">
+          <h2 id="vistoria-titulo">Vistoria da obra</h2>
+          <p class="estrelas" id="estrelas" aria-live="polite"></p>
+        </div>
+        <ul class="checklist" id="checklist"></ul>
+      </section>
+
+      <section class="orcamento" aria-labelledby="orc-titulo">
+        <h2 id="orc-titulo">Orçamento</h2>
+        <p class="area" id="orc-area"></p>
+        <ul class="lista-calc" id="orc-lista"></ul>
+        <p class="calc-total"><span>Total</span><span id="orc-total">R$ 0,00</span></p>
+        <div class="meta-orc" id="meta-orc" hidden>
+          <div class="meta-barra"><span id="meta-fill"></span></div>
+          <p id="meta-texto"></p>
+        </div>
+        <button type="button" class="botao" id="levar">Levar tudo para o carrinho</button>
+        <p class="calc-nota">Estimativa para orçamento. O piso aparece só no desenho e não entra na conta.</p>
+      </section>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="fita" aria-hidden="true"></div>
+  <div class="rodape">
+    <p class="frase">Simulador DrywallPC, servido por um gabinete de gesso.</p>
+    <p>Projeto semestral da turma CDC2NA, UniFECAF. Expotech 2026.</p>
+  </div>
+</footer>
+
+<p class="aviso-flutuante" id="aviso" role="status" aria-live="polite"></p>
+
+</body>
+</html>

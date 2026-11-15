@@ -1,0 +1,319 @@
+<!doctype html>
+<!--
+  DrywallPC - site do projeto (Expotech 2026, UniFECAF)
+
+  Estrutura:
+  - index.html      conteúdo da página (este arquivo)
+  - css/style.css   visual (cores, fontes, layout)
+  - js/script.js    interação (endereço acessado, progresso, filtros, fotos ampliadas)
+  - fotos/          imagens usadas na página
+
+  Como editar:
+  - Tudo que aparece com fundo amarelo e entre [colchetes] (classe "preencher")
+    ainda precisa ser preenchido pelo grupo. Troque o texto e apague a classe.
+  - Fotos: troque cada <div class="foto">...</div> por
+      <a class="foto-real" href="fotos/nome.jpg"><img src="fotos/nome.jpg" alt="descrição"></a>
+    e coloque a imagem na pasta "fotos".
+  - Status do diário: use as classes "ok" (concluído), "andando" (em andamento)
+    ou "fazer" (a fazer) no <span class="status">. A barra de progresso e a
+    placa de obra são calculadas automaticamente a partir desses status.
+  - Data de entrega: ajuste o data-data (AAAA-MM-DD) no <span id="contagem">.
+  - Para publicar: copie esta pasta inteira para a pasta do site no IIS
+    (normalmente C:\inetpub\wwwroot) e publique com o ngrok. Veja o LEIA-ME.txt.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DrywallPC</title>
+<meta name="description" content="DrywallPC: um computador montado dentro de um gabinete feito de drywall. Projeto semestral da turma CDC2NA, UniFECAF, Expotech 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/script.js" defer></script>
+</head>
+<body>
+
+<div class="fita" aria-hidden="true"></div>
+<header class="topo">
+  <div class="topo-in">
+    <a class="marca" href="#inicio">DrywallPC</a>
+    <nav aria-label="Seções">
+      <a href="#diario">Diário de obra</a>
+      <a href="#gabinete">O gabinete</a>
+      <a href="#hardware">Hardware</a>
+      <a href="#infra">Infraestrutura</a>
+      <a href="#seguranca">Segurança</a>
+      <a href="#equipe">Equipe</a>
+      <a href="loja.html" class="link-loja">Loja</a>
+      <a href="simulador.html" class="link-loja">Simulador</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+
+  <div class="hero">
+    <div>
+      <h1>DrywallPC</h1>
+      <p class="lead">Um computador montado dentro de um gabinete feito de drywall, rodando um servidor em máquina virtual e este próprio site.</p>
+      <div class="servidor">
+        <p class="forte">Você está lendo esta página direto do computador que está dentro deste gabinete de drywall.</p>
+        <p class="host">Endereço acessado: <span id="host">—</span></p>
+        <p class="host">Caminho até aqui: <span id="caminho">—</span></p>
+      </div>
+    </div>
+
+    <aside class="placa-obra" aria-labelledby="placa-titulo">
+      <div class="placa-obra-in">
+        <h2 id="placa-titulo">Placa de obra</h2>
+        <dl>
+          <div class="campo"><dt>Obra</dt><dd>Casemod DrywallPC</dd></div>
+          <div class="campo"><dt>Local</dt><dd>UniFECAF, Taboão da Serra, Expotech 2026</dd></div>
+          <div class="campo"><dt>Responsáveis</dt><dd>Leonardo, Eduardo, Maria Isabella e Lira, turma CDC2NA</dd></div>
+          <div class="campo"><dt>Início da obra</dt><dd>28/10/2026</dd></div>
+          <div class="campo"><dt>Entrega prevista</dt><dd>11/11/2026 <span id="contagem" class="contagem" data-data="2026-11-11"></span></dd></div>
+          <div class="campo"><dt>Situação</dt><dd><span id="situacao">Em construção</span> <span id="situacao-progresso" class="contagem"></span></dd></div>
+        </dl>
+      </div>
+    </aside>
+  </div>
+
+  <section class="bloco" id="diario" aria-labelledby="diario-titulo">
+    <h2 id="diario-titulo">Diário de obra</h2>
+    <p class="intro">Cada etapa da construção, da primeira reunião até o servidor ligado. Fotos e datas são atualizadas conforme a obra avança.</p>
+
+    <div class="progresso">
+      <div class="progresso-barra" role="progressbar" aria-label="Progresso da obra" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progresso-fill"></span></div>
+      <p id="progresso-texto">Progresso calculado a partir dos status abaixo.</p>
+    </div>
+
+    <div class="filtros" role="group" aria-label="Filtrar etapas por status">
+      <button type="button" data-filtro="todas" aria-pressed="true">Todas</button>
+      <button type="button" data-filtro="ok" aria-pressed="false">Concluídas</button>
+      <button type="button" data-filtro="andando" aria-pressed="false">Em andamento</button>
+      <button type="button" data-filtro="fazer" aria-pressed="false">A fazer</button>
+    </div>
+    <p class="filtros-vazio" id="filtros-vazio" hidden>Nenhuma etapa com esse status.</p>
+
+    <ol class="diario">
+      <li data-etapa="1">
+        <div>
+          <h3>Planejamento</h3>
+          <div class="meta"><span>28/10/2026</span><span class="status ok">Concluído</span></div>
+          <p>Definição do projeto e divisão do grupo em quatro frentes: estrutura e site, hardware, servidores e rede, segurança.</p>
+        </div>
+        <div class="foto">Foto ou esboço do planejamento</div>
+      </li>
+      <li data-etapa="2">
+        <div>
+          <h3>Teste de segurança com o Wazuh</h3>
+          <div class="meta"><span>30/10/2026</span><span class="status ok">Concluído</span></div>
+          <p>Teste de ataque e defesa feito em laboratório: Wazuh 4.14.8 numa máquina virtual, agente conectado num notebook e um ataque simulado detectado. No caminho, resolvemos três problemas: o serviço que desistia de ligar por demora, o agente apontando para o endereço IP errado e o teclado da máquina virtual em outro padrão. O Wazuh ficou só nesse teste e não faz parte da montagem final.</p>
+        </div>
+        <a class="foto-real" href="fotos/wazuh-painel.jpg"><img style="object-position: right top" src="fotos/wazuh-painel.jpg" alt="Painel do Wazuh com cinco falhas de autenticação detectadas" loading="lazy"></a>
+      </li>
+      <li data-etapa="3">
+        <div>
+          <h3>Escolha do PC</h3>
+          <div class="meta"><span class="preencher">[data]</span><span class="status ok">Concluído</span></div>
+          <p>PC usado com Intel Core i5-2400 de 3,1&nbsp;GHz, 8&nbsp;GB de RAM DDR3, SSD de 128&nbsp;GB e Windows de 64 bits. As peças saem deste gabinete comum e vão para o cubo de drywall.</p>
+        </div>
+        <a class="foto-real" href="fotos/pc-escolhido.jpg"><img src="fotos/pc-escolhido.jpg" alt="O PC escolhido ainda no gabinete preto original, ligado a um monitor, teclado e mouse" loading="lazy"></a>
+      </li>
+      <li data-etapa="4">
+        <div>
+          <h3>Estrutura do gabinete</h3>
+          <div class="meta"><span>07/11/2026</span><span class="status ok">Concluído</span></div>
+          <p>Placas de drywall RU de 12,5&nbsp;mm cortadas e montadas em forma de cubo de 40&nbsp;cm. Para essa etapa usamos parafusadeira, trena, espátula e cantoneiras metálicas para as quinas.</p>
+        </div>
+        <div class="fotos-col">
+          <a class="foto-real" href="fotos/estrutura-cubo.jpg"><img style="object-position: center 37%" src="fotos/estrutura-cubo.jpg" alt="Cubo de drywall verde em montagem, com uma das placas ainda solta" loading="lazy"></a>
+          <a class="foto-real" href="fotos/estrutura-materiais.jpg"><img style="object-position: center 25%" src="fotos/estrutura-materiais.jpg" alt="Parafusadeira, trena, espátula e cantoneiras metálicas sobre placas de drywall" loading="lazy"></a>
+        </div>
+      </li>
+      <li data-etapa="5">
+        <div>
+          <h3>Fechamento e acabamento</h3>
+          <div class="meta"><span>11/11/2026</span><span class="status ok">Concluído</span></div>
+          <p>Cubo fechado, pintado de preto e com fita zebrada amarela e preta em todas as bordas, no estilo de sinalização de obra. A frente fica aberta e a lateral ganhou uma grade para o fan RGB.</p>
+        </div>
+        <div class="fotos-col">
+          <a class="foto-real" href="fotos/gabinete-pronto.jpg"><img style="object-position: center 20%" src="fotos/gabinete-pronto.jpg" alt="Gabinete de drywall pronto: cubo preto com fita zebrada amarela e preta nas bordas, frente aberta e o computador ligado com luzes RGB dentro" loading="lazy"></a>
+          <a class="foto-real" href="fotos/gabinete-lateral.jpg"><img style="object-position: center 52%" src="fotos/gabinete-lateral.jpg" alt="Lateral do gabinete pronto, com a grade de ventilação e o fan RGB aceso atrás dela" loading="lazy"></a>
+        </div>
+      </li>
+      <li data-etapa="6">
+        <div>
+          <h3>Montagem do hardware</h3>
+          <div class="meta"><span>11/11/2026</span><span class="status ok">Concluído</span></div>
+          <p>Peças retiradas do gabinete original e instaladas dentro do cubo: placa-mãe deitada na base, fonte ao lado, SSD preso na parede do fundo e fan RGB na lateral. O computador já liga dentro do drywall.</p>
+        </div>
+        <a class="foto-real" href="fotos/hardware-montado.jpg"><img style="object-position: center 32%" src="fotos/hardware-montado.jpg" alt="Interior do gabinete de drywall com o computador ligado: fan RGB na lateral, SSD Nikopol na parede do fundo, placa-mãe com cooler na base e fonte ao lado" loading="lazy"></a>
+      </li>
+      <li data-etapa="7">
+        <div>
+          <h3>Servidor no ar</h3>
+          <div class="meta"><span>11/11/2026</span><span class="status ok">Concluído</span></div>
+          <p>Máquina virtual configurada no VirtualBox, este site hospedado no IIS e publicado na internet com o ngrok.</p>
+        </div>
+        <a class="foto-real" href="fotos/site-na-vm.jpg"><img style="object-position: center top" src="fotos/site-na-vm.jpg" alt="Janela do VirtualBox com a máquina virtual DryWallPc aberta e o site DrywallPC carregado no navegador pelo endereço localhost" loading="lazy"></a>
+      </li>
+    </ol>
+  </section>
+
+  <section class="bloco" id="gabinete" aria-labelledby="gabinete-titulo">
+    <h2 id="gabinete-titulo">O gabinete</h2>
+    <p class="intro">Em vez de um gabinete comprado, o DrywallPC usa um cubo feito de drywall, o mesmo material das paredes e forros de construção a seco, com a frente aberta para ver o computador funcionando.</p>
+    <div class="gabinete-grid">
+      <dl class="ficha ficha-uma">
+        <div class="item"><dt>Formato</dt><dd>Cubo de 40&nbsp;cm de lado</dd></div>
+        <div class="item"><dt>Placas</dt><dd>Drywall RU de 12,5&nbsp;mm<span class="porque">A placa verde é a versão resistente à umidade, usada em banheiros e cozinhas.</span></dd></div>
+        <div class="item"><dt>Quinas</dt><dd>Cantoneiras metálicas perfuradas<span class="porque">Protegem as bordas do gesso e deixam os cantos retos depois da massa.</span></dd></div>
+        <div class="item"><dt>Frente</dt><dd>Aberta, sem tampa<span class="porque">Deixa as peças à vista e ajuda o ar a circular.</span></dd></div>
+        <div class="item"><dt>Acabamento</dt><dd>Pintura preta e fita zebrada amarela e preta nas bordas<span class="porque">A fita de sinalização lembra que o gabinete nasceu num canteiro de obra.</span></dd></div>
+        <div class="item"><dt>Ventilação</dt><dd>Fan RGB na lateral, atrás de uma grade, e a frente aberta<span class="porque">O gesso segura o calor, então o ar precisa de um caminho para entrar frio e sair quente.</span></dd></div>
+      </dl>
+      <figure class="print">
+        <a href="fotos/gabinete-pronto.jpg"><img src="fotos/gabinete-pronto.jpg" alt="Gabinete de drywall pronto: cubo preto com fita zebrada amarela e preta nas bordas, frente aberta e o computador ligado com luzes RGB dentro" loading="lazy"></a>
+        <figcaption>O gabinete pronto, com o computador ligado dentro do cubo de drywall.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="bloco" id="hardware" aria-labelledby="hardware-titulo">
+    <h2 id="hardware-titulo">Hardware</h2>
+    <p class="intro">As peças que ficam dentro do gabinete e por que cada uma foi escolhida.</p>
+    <dl class="ficha">
+      <div class="item"><dt>Processador</dt><dd>Intel Core i5-2400, 4 núcleos, 3,1&nbsp;GHz<span class="porque">Tem suporte a virtualização (VT-x), obrigatório para rodar a máquina virtual.</span></dd></div>
+      <div class="item"><dt>Placa-mãe</dt><dd>Placa compacta, soquete LGA&nbsp;1155, memória DDR3<span class="porque">Pequena, cabe com folga dentro do cubo de 40&nbsp;cm.</span></dd></div>
+      <div class="item"><dt>Memória</dt><dd>8&nbsp;GB DDR3<span class="porque">Dá conta do Windows e da máquina virtual do servidor ao mesmo tempo.</span></dd></div>
+      <div class="item"><dt>Armazenamento</dt><dd>SSD Nikopol de 128&nbsp;GB, SATA 2,5"<span class="porque">Com HD comum, a máquina virtual ficaria lenta.</span></dd></div>
+      <div class="item"><dt>Fonte</dt><dd>C3&nbsp;Tech DSA-500VE, ATX, 500&nbsp;W, bivolt automático</dd></div>
+      <div class="item"><dt>Refrigeração</dt><dd>Cooler do processador e um fan RGB</dd></div>
+      <div class="item"><dt>Sistema</dt><dd>Windows de 64 bits</dd></div>
+    </dl>
+    <figure class="print">
+      <a href="fotos/hardware-pecas.jpg"><img src="fotos/hardware-pecas.jpg" alt="Fan RGB, placa-mãe com cooler vermelho, fonte C3 Tech DSA-500VE e SSD Nikopol de 128 GB sobre uma mesa" loading="lazy"></a>
+      <figcaption>As peças fora do gabinete original: fan RGB, placa-mãe com o cooler do processador, fonte de 500&nbsp;W e SSD de 128&nbsp;GB.</figcaption>
+    </figure>
+    <figure class="print print-retrato">
+      <a href="fotos/hardware-montado.jpg"><img src="fotos/hardware-montado.jpg" alt="Interior do gabinete de drywall com o computador ligado: fan RGB na lateral, SSD Nikopol na parede do fundo, placa-mãe com cooler na base e fonte ao lado" loading="lazy"></a>
+      <figcaption>As mesmas peças já instaladas e funcionando dentro do cubo.</figcaption>
+    </figure>
+  </section>
+
+  <section class="bloco" id="infra" aria-labelledby="infra-titulo">
+    <h2 id="infra-titulo">Infraestrutura</h2>
+    <p class="intro">O DrywallPC funciona como um pequeno data center: uma única máquina física rodando uma máquina virtual, que faz o papel de servidor.</p>
+    <div class="planta">
+      <p class="planta-titulo">DrywallPC, a máquina física</p>
+      <p class="planta-sub">VirtualBox, com a máquina virtual em rede NAT, separada do sistema da máquina física</p>
+      <div class="vms vms-uma">
+        <div class="vm">
+          <h3>Windows Server 2022</h3>
+          <p class="ram">Máquina virtual DryWall-PC: 4&nbsp;GB de RAM, 2 processadores, disco de 40&nbsp;GB</p>
+          <p>Hospeda este site no IIS, o servidor web do Windows.</p>
+        </div>
+      </div>
+    </div>
+    <p class="fora">O Windows Server também hospeda a <a href="loja.html">loja de demonstração Depósito DrywallPC</a>, um sistema em HTML, CSS e JavaScript com catálogo, carrinho e calculadora de material de drywall, e o <a href="simulador.html">simulador Monte seu cômodo</a>, onde você desenha o ambiente, passa pela vistoria e recebe o orçamento.</p>
+    <p class="fora">O ngrok roda dentro da própria máquina virtual e publica o site na internet. O QR Code da placa de obra trouxe você até aqui por esse caminho.</p>
+  </section>
+
+  <section class="bloco" id="seguranca" aria-labelledby="seguranca-titulo">
+    <h2 id="seguranca-titulo">Segurança</h2>
+    <p class="intro">Relatório de segurança do DrywallPC, organizado pelos três pilares da segurança da informação: confidencialidade, integridade e disponibilidade.</p>
+
+    <div class="pilares">
+      <article class="pilar">
+        <h3>Confidencialidade</h3>
+        <p class="pilar-def">Só quem tem permissão acessa a informação.</p>
+        <ul>
+          <li>O servidor guarda apenas conteúdo público. Não há login, banco de dados nem cadastro de visitantes.</li>
+          <li>Na loja e no simulador, o carrinho e os dados do pedido ficam só no navegador de quem está usando. Nada é enviado para o servidor.</li>
+          <li>O Windows Server pede senha para entrar, e só dois integrantes do grupo têm essa senha.</li>
+          <li>O servidor roda numa máquina virtual com a rede em modo NAT. Os outros computadores da rede não conseguem chegar nela diretamente, e no dia a dia o site é aberto pelo localhost, de dentro do próprio servidor.</li>
+          <li>O acesso remoto à tela da máquina virtual (servidor de desktop remoto do VirtualBox) está desabilitado.</li>
+          <li>Para o site sair na internet, o ngrok roda dentro da própria máquina virtual e entrega com HTTPS. O tráfego vai criptografado e não é preciso abrir portas no roteador nem no VirtualBox.</li>
+        </ul>
+        <p class="pilar-limite"><strong>Ponto fraco:</strong> pelo localhost o site abre por HTTP, sem criptografia, e a mesma senha é dividida por duas pessoas. Com o ngrok ligado, o endereço abre para qualquer pessoa que tenha o link.</p>
+      </article>
+
+      <article class="pilar">
+        <h3>Integridade</h3>
+        <p class="pilar-def">A informação não é alterada por quem não deve.</p>
+        <ul>
+          <li>O site é feito só de arquivos estáticos (HTML, CSS e JavaScript). Nenhum formulário grava no servidor, então o visitante não tem como mudar o conteúdo.</li>
+          <li>Os arquivos só são trocados direto na pasta do IIS, por quem tem a senha do servidor: dois integrantes do grupo.</li>
+          <li>O grupo guarda uma cópia completa do site fora do servidor. Se algo for alterado ou apagado, basta copiar a pasta de novo.</li>
+        </ul>
+        <p class="pilar-limite"><strong>Ponto fraco:</strong> não há verificação automática dos arquivos. Uma alteração indevida só seria percebida olhando o site ou comparando com a cópia.</p>
+      </article>
+
+      <article class="pilar">
+        <h3>Disponibilidade</h3>
+        <p class="pilar-def">O serviço está no ar quando alguém precisa.</p>
+        <ul>
+          <li>O IIS é um serviço do Windows e volta a funcionar sozinho quando a máquina virtual é ligada.</li>
+          <li>O site é leve e não depende de banco de dados. Se o JavaScript ou as fontes não carregarem, a página continua inteira e legível.</li>
+          <li>A máquina virtual tem 4&nbsp;GB de RAM, 2 processadores e disco de 40&nbsp;GB, o que sobra para o Windows Server 2022 servir um site estático.</li>
+          <li>O ngrok, ligado dentro da máquina virtual, deixa o site acessível de fora da rede onde o gabinete está.</li>
+          <li>No gabinete, o fan na lateral e a frente aberta tiram o calor que o gesso segura, e o SSD não tem partes móveis para quebrar no transporte.</li>
+        </ul>
+        <p class="pilar-limite"><strong>Ponto fraco:</strong> tudo depende de uma única máquina, uma única fonte e uma única conexão, sem nobreak. Se o computador desligar, a internet cair ou o túnel do ngrok fechar, o site sai do ar. O Windows Server 2022 é a versão de avaliação, que vale por 180 dias.</p>
+      </article>
+    </div>
+
+    <div class="teste">
+      <h3>Teste de ataque e defesa, 30/10/2026</h3>
+      <p>Durante o projeto, fizemos em laboratório um teste de ataque e detecção com o Wazuh, um sistema de monitoramento de segurança, instalado num notebook. Simulamos o ataque com o comando <code>runas</code> do Windows, tentando entrar cinco vezes com um usuário que não existe. O Wazuh registrou as cinco tentativas pela regra 60122 (falha de login, nível 5 numa escala de 0 a 15) e classificou o comportamento na técnica Account Access Removal (T1531) do MITRE ATT&amp;CK, um catálogo mundial de técnicas de ataque.</p>
+      <p>O teste mostra na prática o pilar da confidencialidade: tentativas de acesso indevido deixam rastro e podem ser detectadas. O Wazuh ficou só como registro desse teste e não faz parte da montagem final do gabinete.</p>
+      <figure class="print">
+        <a href="fotos/wazuh-painel.jpg"><img src="fotos/wazuh-painel.jpg" alt="Painel do Wazuh: 5 alertas no total, 5 falhas de autenticação, todos do agente notebook-leonardo" loading="lazy"></a>
+        <figcaption>Painel do Wazuh: as cinco falhas de autenticação, todas vindas do agente notebook-leonardo.</figcaption>
+      </figure>
+      <figure class="print">
+        <a href="fotos/wazuh-alertas.jpg"><img src="fotos/wazuh-alertas.jpg" alt="Lista de eventos do Wazuh com cinco alertas Logon Failure, regra 60122" loading="lazy"></a>
+        <figcaption>Lista de eventos: cada tentativa aparece com o horário, o agente e a regra que a reconheceu.</figcaption>
+      </figure>
+    </div>
+    <p class="aviso">O teste foi feito apenas em equipamento do próprio grupo, sem alcançar a rede da faculdade nem a internet.</p>
+  </section>
+
+  <section class="bloco" id="equipe" aria-labelledby="equipe-titulo">
+    <h2 id="equipe-titulo">Equipe</h2>
+    <p class="intro">Cada integrante cuidou de uma frente, e todos conhecem o projeto inteiro.</p>
+    <ul class="equipe">
+      <li><span class="nome">Leonardo Almeida Reis</span><span class="frente">Líder do grupo, estrutura do gabinete e site</span></li>
+      <li><span class="nome">Eduardo Rodrigues</span><span class="frente">Hardware, máquina virtual e hospedagem do site</span></li>
+      <li><span class="nome">Maria Isabella</span><span class="frente preencher">[frente]</span></li>
+      <li><span class="nome">Lira Cristina Rodrigues de Araujo</span><span class="frente preencher">[frente]</span></li>
+    </ul>
+    <p class="disciplinas">Disciplinas envolvidas: Computer Network, Cyber Security, Computer Architecture and Organization e Server and Data Center Administration.</p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="fita" aria-hidden="true"></div>
+  <div class="rodape">
+    <p class="frase">Construído por quatro alunos, servido por um gabinete de gesso.</p>
+    <p>Projeto semestral da turma CDC2NA, UniFECAF. Expotech 2026.</p>
+  </div>
+</footer>
+
+<!-- Foto ampliada: preenchida pelo script.js ao clicar numa foto -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada" hidden>
+  <button type="button" class="lightbox-fechar" aria-label="Fechar foto">&times;</button>
+  <figure>
+    <img alt="">
+    <figcaption></figcaption>
+  </figure>
+</div>
+
+<a href="#inicio" class="voltar-topo" id="voltar-topo" aria-label="Voltar ao topo">&uarr;</a>
+
+</body>
+</html>

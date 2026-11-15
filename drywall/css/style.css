@@ -1,0 +1,298 @@
+/* ============================================================
+   DrywallPC - folha de estilo
+   Projeto semestral da turma CDC2NA, UniFECAF, Expotech 2026
+
+   Cores e fontes ficam nas variáveis abaixo (:root).
+   Para mudar a cor de destaque (amarelo), troque --sinal.
+   ============================================================ */
+
+:root {
+  --gesso: #DEDDD8;
+  --gesso-claro: #ECEBE7;
+  --placa: #FFFFFF;
+  --grafite: #23252A;
+  --concreto: #5F605C;
+  --linha: #B4B3AD;
+  --sinal: #FFC20E;
+  --sinal-claro: #FFE58A;
+  --fita: repeating-linear-gradient(-45deg, var(--sinal) 0 16px, var(--grafite) 16px 32px);
+  --titulo: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --texto: "Barlow", "Segoe UI", Arial, sans-serif;
+}
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .progresso-barra span { transition: none; }
+}
+body {
+  margin: 0;
+  background: var(--gesso);
+  color: var(--grafite);
+  font-family: var(--texto);
+  font-size: 17px;
+  line-height: 1.6;
+}
+body.sem-rolagem { overflow: hidden; }
+a { color: var(--grafite); }
+a:focus-visible, summary:focus-visible, button:focus-visible { outline: 3px solid var(--grafite); outline-offset: 3px; }
+img { max-width: 100%; display: block; }
+code {
+  font-family: Consolas, "Courier New", monospace; font-size: .92em;
+  background: var(--placa); padding: 0 4px; border: 1px solid var(--linha);
+}
+
+/* Faixa zebrada de obra (topo e rodapé) */
+.fita { height: 14px; background: var(--fita); }
+
+/* ---------- Cabeçalho fixo ---------- */
+.topo {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--grafite); color: var(--placa);
+}
+.topo-in {
+  max-width: 1040px; margin: 0 auto; padding: 10px 20px;
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+}
+.marca {
+  font-family: var(--titulo); font-weight: 700; font-size: 24px; letter-spacing: .02em;
+  color: var(--sinal); text-decoration: none;
+}
+.topo nav { display: flex; gap: 18px; flex-wrap: wrap; }
+.topo nav a {
+  color: var(--placa); text-decoration: none; font-weight: 500; font-size: 15px;
+  padding-bottom: 2px; border-bottom: 2px solid transparent;
+}
+.topo nav a:hover { color: var(--sinal); }
+.topo nav a:focus-visible { outline-color: var(--sinal); }
+/* Seção visível no momento (marcada pelo script.js) */
+.topo nav a.ativo { color: var(--sinal); border-bottom-color: var(--sinal); }
+/* Link para a loja (loja.html) em destaque no menu */
+.topo nav a.link-loja { background: var(--sinal); color: var(--grafite); padding: 0 8px; border-bottom: 0; }
+.topo nav a.link-loja:hover { background: var(--sinal-claro); }
+
+main { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+/* ---------- Abertura ---------- */
+.hero {
+  display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px;
+  align-items: start; padding: 56px 0 64px;
+}
+.hero h1 {
+  font-family: var(--titulo); font-weight: 700;
+  font-size: clamp(64px, 12vw, 128px); line-height: .88;
+  margin: 0 0 20px; letter-spacing: -.01em;
+}
+.lead { font-size: 21px; line-height: 1.5; max-width: 30ch; margin: 0 0 28px; }
+.servidor {
+  border-left: 6px solid var(--sinal); background: var(--placa);
+  padding: 14px 18px; max-width: 46ch;
+}
+.servidor p { margin: 0; }
+.servidor .forte { font-weight: 600; }
+.servidor .host { margin-top: 6px; font-size: 15px; color: var(--concreto); }
+.servidor .host span { color: var(--grafite); font-weight: 500; overflow-wrap: anywhere; }
+
+/* Placa de obra */
+.placa-obra { background: var(--fita); padding: 12px; }
+.placa-obra-in { background: var(--placa); border: 3px solid var(--grafite); }
+.placa-obra h2 {
+  margin: 0; padding: 10px 18px; background: var(--sinal);
+  font-family: var(--titulo); font-weight: 700; font-size: 26px;
+  border-bottom: 3px solid var(--grafite);
+}
+.placa-obra dl { margin: 0; }
+.placa-obra .campo { padding: 10px 18px; border-bottom: 1px solid var(--linha); }
+.placa-obra .campo:last-child { border-bottom: 0; }
+.placa-obra dt { font-size: 13px; color: var(--concreto); }
+.placa-obra dd { margin: 0; font-weight: 500; }
+/* Texto complementar preenchido pelo script.js (contagem de dias, etapas) */
+.contagem { display: block; font-size: 14px; font-weight: 400; color: var(--concreto); }
+.contagem:empty { display: none; }
+
+/* Campos que o grupo ainda precisa preencher */
+.preencher { background: var(--sinal-claro); padding: 0 4px; }
+
+/* ---------- Seções ---------- */
+section.bloco { padding: 56px 0; border-top: 2px solid var(--grafite); }
+section.bloco > h2 {
+  font-family: var(--titulo); font-weight: 700;
+  font-size: clamp(36px, 6vw, 52px); line-height: 1; margin: 0 0 12px;
+}
+.intro { max-width: 62ch; margin: 0 0 32px; color: var(--concreto); font-size: 18px; }
+
+/* ---------- Diário de obra ---------- */
+.progresso { max-width: 62ch; margin: -12px 0 24px; }
+.progresso-barra {
+  height: 16px; border: 2px solid var(--grafite); background: var(--placa);
+}
+.progresso-barra span {
+  display: block; height: 100%; width: 0; background: var(--fita);
+  transition: width .8s ease;
+}
+.progresso p { margin: 6px 0 0; font-size: 15px; color: var(--concreto); }
+
+.filtros { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 8px; }
+.filtros button {
+  font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+  padding: 6px 14px; border: 2px solid var(--grafite);
+  background: var(--placa); color: var(--grafite);
+}
+.filtros button:hover { background: var(--sinal); }
+.filtros button[aria-pressed="true"] { background: var(--grafite); color: var(--placa); }
+.filtros-vazio { margin: 16px 0 0; color: var(--concreto); }
+.filtros-vazio[hidden] { display: none; }
+
+.diario { list-style: none; margin: 0; padding: 0; }
+.diario li {
+  display: grid; grid-template-columns: 64px 1fr 220px; gap: 20px;
+  padding: 20px 0; border-bottom: 1px solid var(--linha); align-items: start;
+}
+.diario li.oculta { display: none; }
+/* O número da etapa vem do atributo data-etapa, assim ele não muda ao filtrar */
+.diario li::before {
+  content: attr(data-etapa);
+  font-family: var(--titulo); font-weight: 700; font-size: 44px; line-height: 1;
+}
+.diario h3 { font-family: var(--titulo); font-weight: 600; font-size: 26px; margin: 0 0 4px; line-height: 1.1; }
+.diario p { margin: 4px 0 0; max-width: 54ch; }
+.meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 15px; color: var(--concreto); }
+.status { font-size: 13px; font-weight: 600; padding: 2px 10px; border: 2px solid var(--grafite); }
+.status.ok { background: var(--grafite); color: var(--placa); }
+.status.andando { background: var(--sinal); }
+.status.fazer { background: transparent; }
+
+/* Espaço reservado para foto ainda não tirada */
+.foto {
+  aspect-ratio: 4 / 3; border: 2px dashed var(--linha); background: var(--gesso-claro);
+  display: grid; place-items: center; text-align: center; padding: 10px;
+  font-size: 14px; color: var(--concreto);
+}
+/* Foto real (abre ampliada ao clicar, ver script.js) */
+.foto-real { display: block; }
+.foto-real img {
+  width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: center top;
+  border: 2px solid var(--grafite); background: var(--placa);
+}
+.fotos-col { display: grid; gap: 10px; }
+
+/* ---------- O gabinete / Hardware ---------- */
+.gabinete-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: start; }
+.gabinete-grid .print { margin: 0; }
+.ficha { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 40px; margin: 0; }
+.ficha.ficha-uma { grid-template-columns: 1fr; }
+.ficha .item { padding: 16px 0; border-bottom: 1px solid var(--linha); }
+.ficha dt { font-family: var(--titulo); font-weight: 600; font-size: 22px; line-height: 1.2; }
+.ficha dd { margin: 4px 0 0; }
+.ficha .porque { display: block; color: var(--concreto); font-size: 15px; margin-top: 2px; }
+
+/* ---------- Infraestrutura ---------- */
+.planta { border: 2px dashed var(--grafite); padding: 20px; background: var(--gesso-claro); }
+.planta-titulo { font-family: var(--titulo); font-weight: 700; font-size: 24px; margin: 0; }
+.planta-sub { margin: 0 0 18px; color: var(--concreto); font-size: 15px; }
+.vms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.vm { background: var(--placa); border: 2px solid var(--grafite); padding: 16px; }
+.vms.vms-uma { grid-template-columns: minmax(0, 420px); }
+.vm.ataque { border-top: 8px solid var(--sinal); }
+.vm h3 { font-family: var(--titulo); font-weight: 600; font-size: 24px; margin: 0; }
+.vm .ram { font-size: 14px; color: var(--concreto); margin: 0 0 8px; }
+.vm p { margin: 0; font-size: 16px; }
+.fora { margin: 18px 0 0; max-width: 62ch; }
+
+/* ---------- Segurança ---------- */
+.passos {
+  list-style: none; margin: 0 0 28px; padding: 0;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; counter-reset: passo;
+}
+.passos li { counter-increment: passo; padding: 18px 20px 18px 0; border-top: 6px solid var(--grafite); }
+.passos li + li { padding-left: 20px; border-left: 1px solid var(--linha); }
+.passos li:first-child { border-top-color: var(--sinal); }
+.passos h3 { font-family: var(--titulo); font-weight: 600; font-size: 24px; margin: 0 0 4px; }
+.passos h3::before { content: counter(passo) ". "; }
+.passos p { margin: 0; }
+.pilares { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 0 0 36px; }
+.pilar { background: var(--placa); border: 2px solid var(--grafite); border-top: 8px solid var(--sinal); padding: 18px; display: flex; flex-direction: column; }
+.pilar h3 { font-family: var(--titulo); font-weight: 700; font-size: 28px; line-height: 1.1; margin: 0; }
+.pilar-def { margin: 4px 0 12px; color: var(--concreto); font-size: 15px; }
+.pilar ul { margin: 0 0 14px; padding-left: 18px; font-size: 16px; }
+.pilar li + li { margin-top: 8px; }
+.pilar-limite { margin: auto 0 0; padding-top: 12px; border-top: 1px solid var(--linha); font-size: 15px; }
+.aviso { max-width: 62ch; font-size: 15px; color: var(--concreto); }
+.teste { margin: 8px 0 28px; }
+.teste h3 { font-family: var(--titulo); font-weight: 600; font-size: 28px; margin: 0 0 6px; }
+.teste > p { max-width: 62ch; margin: 0 0 20px; }
+.print { margin: 0 0 24px; }
+.print img { width: 100%; border: 2px solid var(--grafite); background: var(--placa); }
+/* Foto em pé (retrato): não ocupa a largura toda */
+.print-retrato { max-width: 420px; }
+.print figcaption { font-size: 15px; color: var(--concreto); margin-top: 8px; max-width: 62ch; }
+
+/* ---------- Equipe ---------- */
+.equipe { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 40px; }
+.equipe li { padding: 16px 0; border-bottom: 1px solid var(--linha); }
+.equipe .nome { font-family: var(--titulo); font-weight: 600; font-size: 24px; line-height: 1.2; display: block; }
+.equipe .frente { color: var(--concreto); }
+.disciplinas { margin-top: 28px; max-width: 62ch; }
+
+/* ---------- Rodapé ---------- */
+footer { background: var(--grafite); color: var(--placa); margin-top: 24px; }
+.rodape { max-width: 1040px; margin: 0 auto; padding: 28px 20px 36px; }
+.rodape p { margin: 0; }
+.rodape .frase { font-family: var(--titulo); font-weight: 600; font-size: 24px; color: var(--sinal); margin-bottom: 6px; }
+
+/* ---------- Foto ampliada (lightbox) ---------- */
+.lightbox {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(35, 37, 42, .94);
+  display: grid; place-items: center; padding: 24px;
+}
+.lightbox[hidden] { display: none; }
+.lightbox figure { margin: 0; max-width: 100%; }
+.lightbox img {
+  max-width: min(1100px, 100%); max-height: 82vh; width: auto; margin: 0 auto;
+  border: 3px solid var(--placa); background: var(--placa);
+}
+.lightbox figcaption { color: var(--placa); margin-top: 12px; text-align: center; font-size: 15px; }
+.lightbox-fechar {
+  position: absolute; top: 16px; right: 16px;
+  width: 44px; height: 44px; cursor: pointer;
+  font: inherit; font-size: 26px; line-height: 1;
+  background: var(--sinal); color: var(--grafite); border: 2px solid var(--grafite);
+}
+.lightbox-fechar:focus-visible { outline-color: var(--sinal); }
+
+/* ---------- Botão voltar ao topo ---------- */
+.voltar-topo {
+  position: fixed; right: 20px; bottom: 20px; z-index: 20;
+  width: 48px; height: 48px; display: grid; place-items: center;
+  background: var(--sinal); color: var(--grafite); text-decoration: none;
+  border: 2px solid var(--grafite); font-weight: 700; font-size: 22px;
+  opacity: 0; pointer-events: none; transform: translateY(8px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+.voltar-topo.visivel { opacity: 1; pointer-events: auto; transform: none; }
+
+/* ---------- Telas menores ---------- */
+@media (max-width: 820px) {
+  .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 36px; }
+  .diario li { grid-template-columns: 44px 1fr; }
+  .diario li::before { font-size: 36px; }
+  .diario .foto, .diario .foto-real, .diario .fotos-col { grid-column: 2; }
+  .gabinete-grid { grid-template-columns: 1fr; gap: 28px; }
+  .ficha, .equipe { grid-template-columns: 1fr; }
+  .vms { grid-template-columns: 1fr; }
+  .pilares { grid-template-columns: 1fr; }
+  .passos { grid-template-columns: 1fr; }
+  .passos li + li { padding-left: 0; border-left: 0; }
+}
+@media (max-width: 520px) {
+  body { font-size: 16px; }
+  .topo { position: static; }
+  .topo nav { gap: 12px; }
+  .topo nav a { font-size: 14px; }
+  .lead { font-size: 19px; }
+  .lightbox { padding: 12px; }
+  .voltar-topo { right: 12px; bottom: 12px; }
+}

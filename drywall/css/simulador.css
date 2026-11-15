@@ -1,0 +1,113 @@
+/* ============================================================
+   DrywallPC - estilo do simulador (simulador.html)
+   Usa a base de css/style.css e peças de css/loja.css.
+   ============================================================ */
+
+a.botao-carrinho { text-decoration: none; }
+
+.sim-hero { padding: 40px 0 28px; }
+.sim-hero h1 {
+  font-family: var(--titulo); font-weight: 700;
+  font-size: clamp(48px, 8vw, 88px); line-height: .9; margin: 0 0 14px;
+}
+.sim-hero .lead { max-width: 52ch; margin: 0; }
+
+.sim {
+  display: grid; grid-template-columns: 340px 1fr; gap: 24px; align-items: start;
+  padding-bottom: 56px;
+}
+
+/* ---------- Painel de controles ---------- */
+.sim-painel { display: grid; gap: 14px; position: sticky; top: 72px; }
+.sim-painel fieldset {
+  margin: 0; padding: 12px 16px 16px; display: grid; gap: 10px;
+  background: var(--placa); border: 2px solid var(--grafite);
+}
+.sim-painel legend {
+  font-family: var(--titulo); font-weight: 700; font-size: 20px;
+  padding: 0 8px; margin-left: -8px; background: var(--sinal); border: 2px solid var(--grafite);
+}
+.sim-painel label { display: grid; gap: 4px; }
+.rotulo, .faixa > span { font-size: 14px; font-weight: 600; margin: 0; }
+.faixa > span { display: flex; justify-content: space-between; }
+.faixa output { font-family: var(--titulo); font-weight: 700; font-size: 18px; }
+input[type="range"] { padding: 0; border: 0; background: none; accent-color: var(--grafite); height: 28px; }
+.dica { margin: 0; font-size: 14px; color: var(--concreto); }
+
+.opcoes { display: grid; gap: 6px; }
+.opcao { position: relative; display: block !important; }
+.opcao input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.opcao span {
+  display: flex; align-items: center; gap: 10px; cursor: pointer;
+  padding: 6px 10px; border: 2px solid var(--grafite); font-size: 15px; font-weight: 500;
+}
+.opcao i { width: 26px; height: 18px; border: 2px solid var(--grafite); flex: none; }
+.opcao input:checked + span { background: var(--grafite); color: var(--placa); }
+.opcao input:focus-visible + span { outline: 3px solid var(--sinal); outline-offset: 2px; }
+
+.cores { display: flex; flex-wrap: wrap; gap: 8px; }
+.cor { position: relative; }
+.cor input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.cor span {
+  display: block; width: 36px; height: 36px; cursor: pointer;
+  border: 2px solid var(--grafite); box-shadow: inset 0 0 0 3px var(--placa);
+}
+.cor input:checked + span { outline: 3px solid var(--grafite); outline-offset: 2px; }
+.cor input:focus-visible + span { outline: 3px solid var(--sinal); outline-offset: 2px; }
+
+/* ---------- Cena 3D ---------- */
+.sim-saida { display: grid; gap: 20px; min-width: 0; }
+.cena { background: var(--placa); border: 2px solid var(--grafite); }
+.cena-barra {
+  display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center;
+  padding: 8px 14px; border-bottom: 2px solid var(--grafite); background: var(--gesso-claro);
+}
+#cena { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; background: linear-gradient(#F7F7F4, #ECEBE7); }
+#cena text { font-family: var(--titulo); font-weight: 700; }
+.cena-desc { margin: 0; padding: 8px 14px; font-size: 14px; color: var(--concreto); border-top: 1px solid var(--linha); }
+
+/* ---------- Vistoria ---------- */
+.vistoria, .orcamento { background: var(--placa); border: 2px solid var(--grafite); padding: 16px 20px 20px; }
+.vistoria h2, .orcamento h2 { font-family: var(--titulo); font-weight: 700; font-size: 30px; margin: 0; }
+.vistoria-topo { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+.estrelas { margin: 0; font-size: 26px; letter-spacing: 2px; color: var(--sinal); -webkit-text-stroke: 1px var(--grafite); }
+.estrelas small { font-family: var(--texto); font-size: 14px; letter-spacing: 0; color: var(--concreto); -webkit-text-stroke: 0; margin-left: 6px; }
+.estrelas.aprovada::after {
+  content: "OBRA APROVADA"; margin-left: 10px; vertical-align: middle;
+  font-family: var(--titulo); font-size: 16px; letter-spacing: .04em; -webkit-text-stroke: 0;
+  padding: 2px 8px; color: var(--grafite); background: var(--sinal); border: 2px solid var(--grafite);
+}
+.checklist { list-style: none; margin: 0; padding: 0; }
+.checklist li {
+  display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start;
+  padding: 8px 0; border-bottom: 1px solid var(--linha);
+}
+.checklist li:last-child { border-bottom: 0; }
+.checklist .marca-vist {
+  width: 24px; height: 24px; display: grid; place-items: center; font-weight: 700; font-size: 15px;
+  border: 2px solid var(--grafite);
+}
+.checklist .ok .marca-vist { background: var(--grafite); color: var(--placa); }
+.checklist .falha .marca-vist { background: #FBE3D6; color: #9A3A00; border-color: #9A3A00; }
+.checklist .neutro .marca-vist { color: var(--concreto); border-style: dashed; }
+.checklist strong { display: block; }
+.checklist p { margin: 0; font-size: 15px; color: var(--concreto); }
+
+/* ---------- Orçamento ---------- */
+.orcamento .area { margin: 2px 0 10px; color: var(--concreto); font-size: 15px; }
+.meta-orc { margin: 0 0 14px; }
+.meta-orc[hidden] { display: none; }
+.meta-barra { height: 16px; border: 2px solid var(--grafite); background: var(--gesso-claro); }
+.meta-barra span { display: block; height: 100%; width: 0; background: var(--grafite); transition: width .3s ease; }
+.meta-barra.estourou span { background: #C0392B; }
+.meta-orc p { margin: 6px 0 0; font-size: 15px; }
+
+/* ---------- Telas menores ---------- */
+@media (max-width: 900px) {
+  .sim { grid-template-columns: 1fr; }
+  .sim-painel { position: static; order: 2; }
+  .sim-saida { order: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .meta-barra span { transition: none; }
+}

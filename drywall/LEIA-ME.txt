@@ -1,0 +1,109 @@
+DrywallPC - site do projeto (Expotech 2026, UniFECAF, turma CDC2NA)
+=====================================================================
+
+ARQUIVOS
+--------
+index.html       conteudo da pagina
+css/style.css    visual (cores, fontes, layout, versao mobile)
+js/script.js     interacao (JavaScript puro, sem bibliotecas)
+fotos/           imagens usadas na pagina
+
+loja.html        LOJA "Deposito DrywallPC" (sistema de demonstracao)
+css/loja.css     visual da loja
+js/loja.js       catalogo, carrinho, calculadora de parede e pedidos
+js/ilustracoes.js desenhos (SVG) de cada produto, feitos em codigo
+js/produtos.js   LISTA DE PRODUTOS E PRECOS (usada pela loja e pelo simulador)
+
+simulador.html   SIMULADOR "Monte seu comodo"
+css/simulador.css visual do simulador
+js/simulador.js  desenho 3D do comodo, vistoria (estrelas) e orcamento
+
+O simulador desenha o comodo com as medidas e materiais escolhidos,
+tem o modo raio-x (montantes, guias e emendas das placas), da
+estrelas na "vistoria" conforme as escolhas fazem sentido para o
+comodo (ex.: banheiro pede placa RU, sala de servidores pede RF e
+sem janela) e manda o orcamento para o carrinho da loja.
+As regras da vistoria ficam em COMODOS, no comeco de js/simulador.js.
+
+FOTOS REAIS NOS PRODUTOS: os produtos usam desenhos proprios, que
+funcionam sem internet. Para trocar por uma foto, coloque a imagem em
+fotos/produtos/ e acrescente no produto (em js/loja.js), por exemplo:
+  foto: 'fotos/produtos/trena.jpg',
+Use fotos tiradas pelo grupo, para nao ter problema de direito autoral.
+
+A loja tambem e so HTML + CSS + JS. Carrinho e pedidos ficam salvos
+no navegador de quem acessa (localStorage), sem banco de dados.
+Para mudar produtos, precos ou estoque, edite a lista PRODUTOS no
+comeco de js/loja.js. A loja abre pelo botao "Loja" no menu do site
+ou direto em http://IP-DA-VM/loja.html.
+
+Plano B: a pasta roda igual em qualquer computador (notebook, outra
+VM). Em ultimo caso, da para abrir o index.html direto no navegador.
+
+O site e estatico: nao precisa de banco de dados, PHP, Node nem nada
+alem de um servidor web que entregue arquivos (IIS, Apache, nginx).
+
+
+PUBLICAR NO IIS (Windows Server, na VM)
+---------------------------------------
+1. Copie a pasta inteira (index.html, css, js, fotos) para
+   C:\inetpub\wwwroot\
+   Se preferir outro caminho, crie um site no Gerenciador do IIS
+   apontando para a pasta.
+2. O IIS ja entrega .html, .css, .js e .jpg por padrao, e index.html
+   ja esta na lista de documentos padrao. Nao precisa configurar nada.
+3. Teste na propria VM: http://localhost/
+   Teste de outra maquina da rede: http://IP-DA-VM/
+   (libere a porta 80 no firewall do Windows se nao abrir).
+4. Para publicar na internet com o ngrok:
+   ngrok http 80
+   e use o endereco https://....ngrok-free.app que ele mostrar.
+
+Se for usar Linux (Apache/nginx), e so copiar a pasta para a raiz do
+site (/var/www/html, por exemplo). Nada muda nos arquivos.
+
+
+COMO EDITAR
+-----------
+- Campos amarelos entre [colchetes] (classe "preencher") ainda
+  precisam ser preenchidos pelo grupo. Troque o texto e apague a
+  classe "preencher".
+- Status do diario: no <span class="status">, use a classe
+    ok       = concluido
+    andando  = em andamento
+    fazer    = a fazer
+  A barra de progresso, o texto "X de 7 etapas" e a situacao na placa
+  de obra sao calculados automaticamente a partir desses status.
+- Nova etapa no diario: copie um <li> e ajuste o data-etapa (numero).
+- Data de entrega: ajuste data-data="2026-11-11" no <span id="contagem">.
+  O script mostra "faltam N dias" / "e hoje" ao lado da data.
+- Fotos: troque <div class="foto">...</div> por
+    <a class="foto-real" href="fotos/nome.jpg">
+      <img src="fotos/nome.jpg" alt="descricao da foto">
+    </a>
+  e coloque a imagem na pasta fotos. Qualquer foto abre ampliada ao
+  clicar.
+
+
+O QUE O JAVASCRIPT FAZ (js/script.js)
+-------------------------------------
+1. Mostra o endereco acessado e por qual caminho o visitante chegou
+   (ngrok, rede local, localhost ou arquivo aberto direto).
+2. Calcula o progresso do diario de obra (barra + texto) e atualiza
+   a placa de obra.
+3. Filtra as etapas por status (Todas / Concluidas / Em andamento /
+   A fazer).
+4. Conta os dias ate a entrega.
+5. Marca no menu a secao que esta na tela.
+6. Abre as fotos ampliadas (lightbox) em vez de sair da pagina.
+7. Botao de voltar ao topo.
+
+Se o JavaScript nao carregar, a pagina continua inteira e legivel;
+so perde esses extras.
+
+
+FONTES
+------
+As fontes Barlow e Barlow Condensed vem do Google Fonts. Se a VM ou o
+visitante estiver sem internet, o navegador usa Arial Narrow / Segoe UI
+no lugar, e o site continua funcionando.

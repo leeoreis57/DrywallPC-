@@ -21,6 +21,8 @@ Este repositório guarda o site que documenta o projeto: a construção do case,
 
 ## O que tem no site
 
+Os arquivos do site ficam na pasta [`drywall/`](drywall/). Instruções de publicação e edição estão em [`drywall/LEIA-ME.txt`](drywall/LEIA-ME.txt).
+
 Página principal (`index.html`):
 
 - **Diário de obra**: fotos e etapas da construção do casemod

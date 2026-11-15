@@ -1,0 +1,179 @@
+<!doctype html>
+<!--
+  DrywallPC - Loja de materiais (Expotech 2026, UniFECAF)
+
+  Loja de demonstração de materiais para construção a seco (drywall).
+  Funciona só com HTML + CSS + JavaScript, sem banco de dados:
+  - catálogo, busca e filtros:   js/loja.js (lista PRODUTOS no começo do arquivo)
+  - carrinho e pedidos:          ficam salvos no navegador (localStorage)
+  - visual:                      css/style.css (base do site) + css/loja.css
+
+  Para mudar produtos ou preços, edite a lista PRODUTOS em js/loja.js.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loja DrywallPC</title>
+<meta name="description" content="Loja de demonstração de materiais para construção a seco: placas de drywall, perfis, parafusos, acabamento e ferramentas. Projeto DrywallPC, Expotech 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/loja.css">
+<script src="js/produtos.js" defer></script>
+<script src="js/ilustracoes.js" defer></script>
+<script src="js/loja.js" defer></script>
+</head>
+<body>
+
+<div class="fita" aria-hidden="true"></div>
+<header class="topo">
+  <div class="topo-in">
+    <a class="marca" href="index.html">DrywallPC</a>
+    <nav aria-label="Seções">
+      <a href="index.html">Projeto</a>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#calculadora">Calculadora</a>
+      <a href="simulador.html">Simulador</a>
+    </nav>
+    <button type="button" class="botao-carrinho" id="abrir-carrinho" aria-controls="carrinho" aria-expanded="false">
+      Carrinho <span class="contador" id="contador">0</span>
+    </button>
+  </div>
+</header>
+
+<main id="inicio">
+
+  <div class="loja-hero">
+    <div>
+      <p class="selo">Loja de demonstração</p>
+      <h1>Depósito DrywallPC</h1>
+      <p class="lead">Tudo para construção a seco: placas, perfis, parafusos, acabamento e ferramentas. Os mesmos materiais que usamos para montar o gabinete do DrywallPC.</p>
+    </div>
+    <aside class="aviso-loja">
+      <p class="forte">Esta loja é um projeto acadêmico.</p>
+      <p>Nenhuma compra é cobrada e nenhum dado sai do seu navegador. O carrinho e os pedidos ficam salvos só neste aparelho.</p>
+    </aside>
+  </div>
+
+  <section class="bloco" id="catalogo" aria-labelledby="catalogo-titulo">
+    <h2 id="catalogo-titulo">Catálogo</h2>
+    <p class="intro">Preços por unidade. Use a busca ou escolha uma categoria.</p>
+
+    <div class="busca-linha">
+      <label class="busca">
+        <span>Buscar produto</span>
+        <input type="search" id="busca" placeholder="Ex.: placa RU, parafuso, massa" autocomplete="off">
+      </label>
+      <label class="ordem">
+        <span>Ordenar</span>
+        <select id="ordem">
+          <option value="padrao">Destaques</option>
+          <option value="menor">Menor preço</option>
+          <option value="maior">Maior preço</option>
+          <option value="nome">Nome (A–Z)</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="filtros" id="categorias" role="group" aria-label="Filtrar por categoria"></div>
+
+    <p class="resultado" id="resultado" aria-live="polite"></p>
+    <ul class="produtos" id="produtos"></ul>
+  </section>
+
+  <section class="bloco" id="calculadora" aria-labelledby="calc-titulo">
+    <h2 id="calc-titulo">Calculadora de parede</h2>
+    <p class="intro">Informe o tamanho da parede e a calculadora estima o material de uma parede de drywall com placas dos dois lados, montantes a cada 60&nbsp;cm e 10% de sobra para cortes.</p>
+
+    <div class="calc">
+      <form class="calc-form" id="calc-form" novalidate>
+        <label>
+          <span>Largura da parede (m)</span>
+          <input type="number" id="calc-largura" min="0.5" max="50" step="0.1" value="3" required inputmode="decimal">
+        </label>
+        <label>
+          <span>Altura da parede (m)</span>
+          <input type="number" id="calc-altura" min="0.5" max="6" step="0.1" value="2.7" required inputmode="decimal">
+        </label>
+        <label>
+          <span>Tipo de placa</span>
+          <select id="calc-placa">
+            <option value="placa-st">Standard (branca), áreas secas</option>
+            <option value="placa-ru">RU (verde), resistente à umidade</option>
+            <option value="placa-rf">RF (rosa), resistente ao fogo</option>
+          </select>
+        </label>
+        <label class="check">
+          <input type="checkbox" id="calc-la">
+          <span>Incluir lã de vidro (isolamento acústico)</span>
+        </label>
+        <p class="erro" id="calc-erro" role="alert" hidden></p>
+        <button type="submit" class="botao">Calcular material</button>
+      </form>
+
+      <div class="calc-resultado" id="calc-resultado" aria-live="polite">
+        <p class="calc-vazio">O resultado aparece aqui.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="fita" aria-hidden="true"></div>
+  <div class="rodape">
+    <p class="frase">Depósito DrywallPC, servido por um gabinete de gesso.</p>
+    <p>Loja de demonstração do projeto semestral da turma CDC2NA, UniFECAF. Expotech 2026.</p>
+  </div>
+</footer>
+
+<!-- Carrinho (gaveta lateral), preenchido pelo loja.js -->
+<div class="gaveta-fundo" id="gaveta-fundo" hidden></div>
+<aside class="gaveta" id="carrinho" aria-labelledby="carrinho-titulo" hidden>
+  <div class="gaveta-topo">
+    <h2 id="carrinho-titulo">Carrinho</h2>
+    <button type="button" class="gaveta-fechar" id="fechar-carrinho" aria-label="Fechar carrinho">&times;</button>
+  </div>
+
+  <div class="gaveta-corpo" id="carrinho-corpo">
+    <!-- Etapa 1: itens -->
+    <div id="etapa-itens">
+      <ul class="itens" id="itens"></ul>
+      <p class="carrinho-vazio" id="carrinho-vazio">Seu carrinho está vazio.</p>
+    </div>
+
+    <!-- Etapa 2: dados de entrega -->
+    <form class="checkout" id="checkout" hidden novalidate>
+      <h3>Dados para entrega</h3>
+      <label><span>Nome completo</span><input type="text" id="ck-nome" autocomplete="name" required></label>
+      <label><span>Telefone</span><input type="tel" id="ck-telefone" autocomplete="tel" placeholder="(11) 90000-0000" required></label>
+      <label><span>CEP</span><input type="text" id="ck-cep" autocomplete="postal-code" inputmode="numeric" placeholder="00000-000" maxlength="9" required></label>
+      <fieldset>
+        <legend>Entrega</legend>
+        <label class="check"><input type="radio" name="entrega" value="retirada" checked><span>Retirar na loja (grátis)</span></label>
+        <label class="check"><input type="radio" name="entrega" value="entrega"><span>Entrega em obra (R$&nbsp;60,00; grátis acima de R$&nbsp;800,00)</span></label>
+      </fieldset>
+      <p class="erro" id="ck-erro" role="alert" hidden></p>
+      <button type="button" class="botao-link" id="voltar-itens">&larr; Voltar aos itens</button>
+    </form>
+
+    <!-- Etapa 3: pedido confirmado -->
+    <div class="confirmado" id="confirmado" hidden tabindex="-1"></div>
+  </div>
+
+  <div class="gaveta-rodape" id="gaveta-rodape">
+    <dl class="totais">
+      <div><dt>Subtotal</dt><dd id="subtotal">R$ 0,00</dd></div>
+      <div><dt>Entrega</dt><dd id="frete">—</dd></div>
+      <div class="total"><dt>Total</dt><dd id="total">R$ 0,00</dd></div>
+    </dl>
+    <button type="button" class="botao" id="avancar" disabled>Finalizar pedido</button>
+  </div>
+</aside>
+
+<p class="aviso-flutuante" id="aviso" role="status" aria-live="polite"></p>
+
+</body>
+</html>
