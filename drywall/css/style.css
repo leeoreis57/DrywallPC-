@@ -151,6 +151,8 @@ section.bloco > h2 {
   padding: 20px 0; border-bottom: 1px solid var(--linha); align-items: start;
 }
 .diario li.oculta { display: none; }
+/* Etapa sem foto: o texto ocupa também a coluna da foto */
+.diario li.sem-foto > div { grid-column: 2 / -1; }
 /* O número da etapa vem do atributo data-etapa, assim ele não muda ao filtrar */
 .diario li::before {
   content: attr(data-etapa);
@@ -241,6 +243,11 @@ footer { background: var(--grafite); color: var(--placa); margin-top: 24px; }
 .rodape { max-width: 1040px; margin: 0 auto; padding: 28px 20px 36px; }
 .rodape p { margin: 0; }
 .rodape .frase { font-family: var(--titulo); font-weight: 600; font-size: 24px; color: var(--sinal); margin-bottom: 6px; }
+/* Link no rodapé: amarelo sobre o grafite, para ficar legível */
+.rodape p + p { margin-top: 6px; }
+.rodape a { color: var(--sinal); }
+.rodape a:hover { color: var(--sinal-claro); }
+.rodape a:focus-visible { outline-color: var(--sinal); }
 
 /* ---------- Foto ampliada (lightbox) ---------- */
 .lightbox {

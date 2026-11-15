@@ -57,7 +57,7 @@ PUBLICAR NO IIS (Windows Server, na VM)
    (libere a porta 80 no firewall do Windows se nao abrir).
 4. Para publicar na internet com o ngrok:
    ngrok http 80
-   e use o endereco https://....ngrok-free.app que ele mostrar.
+   e use o endereco https://....ngrok-free.dev que ele mostrar.
 
 Se for usar Linux (Apache/nginx), e so copiar a pasta para a raiz do
 site (/var/www/html, por exemplo). Nada muda nos arquivos.
